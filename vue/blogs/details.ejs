@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../partials/head.ejs') %>
+  <body>
+    <%- include('../partials/nav.ejs') %>
+    <div class="details content">
+      <h2><%= blog.title %></h2>
+      <div class="content">
+        <p><%= blog.body %></p>
+      </div>
+      <a class="delete" data-doc="<%= blog._id%>">
+        <img src="/trashcan.svg" alt="delete icon" />
+      </a>
+    </div>
+    <%- include('../partials/footer.ejs') %>
+    <script>
+      let x = document.querySelector(".delete");
+      x.addEventListener("click", async (e) => {
+        const endpoint = `/blogs/${x.dataset.doc}`;
+        try {
+          let promise = await fetch(endpoint, { method: "DELETE" });
+          let data = await promise.json();
+          console.log(data);
+
+          window.location.href = data.response;
+        } catch (err) {
+          console.log(err);
+        }
+      });
+    </script>
+  </body>
+</html>
